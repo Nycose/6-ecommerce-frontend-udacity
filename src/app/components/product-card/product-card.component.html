@@ -1,0 +1,29 @@
+<mat-card>
+
+    <img mat-card-image [src]="product.image" [alt]="product.title">
+    
+    <mat-card-subtitle>{{ product.price | currency }}</mat-card-subtitle>
+
+    <mat-card-title>{{ product.title }}</mat-card-title>
+
+    <mat-card-actions>
+
+      <app-quantity [product]="product" [quantity]="quantity$ | async"></app-quantity>
+
+      <div id="fab-buttons">
+        <button mat-mini-fab color="basic" [routerLink]="['/products', product.id]">
+          <mat-icon>visibility</mat-icon>
+        </button>
+
+        <button mat-mini-fab color="primary" (click)="addToCart()" *ngIf="!(isInCart$ | async)">
+          <mat-icon>add</mat-icon>
+        </button>
+
+        <button mat-mini-fab color="warn" (click)="removeFromCart()" *ngIf="isInCart$ | async">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      
+    </mat-card-actions>
+    
+</mat-card>

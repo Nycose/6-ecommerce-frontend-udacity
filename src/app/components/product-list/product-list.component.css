@@ -1,0 +1,13 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 25%));
+    gap: 2em;
+    padding: 50px 0px;
+    justify-content: center;
+    align-content: center;
+}
+
+.grid-item {
+    min-width: 300px;
+    min-height: 300px;
+}

@@ -1,0 +1,24 @@
+<ng-container *ngIf="(product$ | async) as product">
+
+    <mat-grid-list cols="2" rowHeight="2:2">
+        <mat-grid-tile>
+            <img [src]="product.image" [alt]="product.title"> 
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <div>
+
+                <h1>{{ product.title }}</h1>
+                <p>
+    
+                    {{ product.price }}
+                </p>
+
+                <app-quantity [product]="product" [quantity]="quantity$ | async"></app-quantity>
+
+                <button mat-raised-button color="primary">ADD TO CART</button>
+            </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    
+</ng-container>
