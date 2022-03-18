@@ -1,4 +1,16 @@
-<mat-form-field appearance="fill" *ngIf="isInCart$ | async">
+<mat-form-field appearance="fill" *ngIf="(hidden$ | async)">
     <mat-label>Quantity</mat-label>
-    <input type="number" min="1" max="50" matInput [formControl]="control" (change)="addToCart()">
+    <input #q type="number" min="1" max="50" matInput [value]="(quantity$ | async)" (change)="increaseQuantity(q.value)">
 </mat-form-field>
+
+<div id="fab-buttons">
+    <ng-content></ng-content>
+
+    <button mat-mini-fab color="primary" (click)="addToCart()" *ngIf="!(hidden$ | async)">
+      <mat-icon>add</mat-icon>
+    </button>
+
+    <button mat-mini-fab color="warn" (click)="removeFromCart()" *ngIf="hidden$ | async">
+      <mat-icon>delete</mat-icon>
+    </button>
+</div>

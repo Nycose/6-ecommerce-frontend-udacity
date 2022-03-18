@@ -6,11 +6,11 @@ import { ProductsHomeComponent } from './components/products-home/products-home.
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/products',
+    redirectTo: '/shop',
     pathMatch: 'full'
   },
   {
-    path: 'products',
+    path: 'shop',
     component: ProductsHomeComponent
   },
   {

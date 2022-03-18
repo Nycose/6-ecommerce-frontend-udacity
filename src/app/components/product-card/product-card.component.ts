@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { filter, map, Observable } from 'rxjs';
 import { IProduct } from 'src/app/models/product-model';
 import { CartService } from 'src/app/services/cart.service';
 
@@ -15,25 +13,17 @@ export class ProductCardComponent implements OnInit {
   @Input()
   product: IProduct;
 
-  isInCart$: Observable<boolean>;
-  quantity$: Observable<number>;
-
   constructor(public cartService: CartService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.isInCart$ = this.cartService.isInCart(this.product.id);
-    this.quantity$ = this.cartService.getCartQuantityById(this.product.id);
   }
 
-  addToCart(): void {
+  addedToCart(): void {
     this._snackBar.open(`${this.product.title} added to cart.`, 'DISMISS', {duration: 2500});
-    this.cartService.addToCart(this.product, 1);
   }
 
-  removeFromCart(): void {
-    this._snackBar
-      .open(`${this.product.title} removed from cart.`, 'DISMISS', { duration: 2500 });
-    this.cartService.removeFromCart(this.product);
+  removedFromCart(): void {
+    this._snackBar.open(`${this.product.title} removed from cart.`, 'DISMISS', {duration: 2500});
   }
 
 }

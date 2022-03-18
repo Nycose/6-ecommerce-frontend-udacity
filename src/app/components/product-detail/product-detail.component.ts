@@ -4,6 +4,7 @@ import { map, Observable, pipe, Subscriber, Subscription, tap } from 'rxjs';
 import { IProduct } from 'src/app/models/product-model';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductStoreService } from 'src/app/services/product-store.service';
+import { QuantityService } from 'src/app/services/quantity.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -18,14 +19,16 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   quantity$: Observable<number>;
 
-  constructor(private productStore: ProductStoreService, private route: ActivatedRoute, private cartService: CartService) { }
+  constructor(
+    private productStore: ProductStoreService, 
+    private route: ActivatedRoute
+    ) { }
 
   ngOnInit(): void {
     this.productId$ = this.route.params.pipe(
       map(params => params['productId']),
       tap(productId => {
         this.product$ = this.productStore.filterById(productId);
-        this.quantity$ = this.cartService.getCartQuantityById(productId);
       })
     )
     .subscribe();

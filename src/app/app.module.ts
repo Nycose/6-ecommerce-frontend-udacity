@@ -25,6 +25,7 @@ import { ProductDetailComponent } from './components/product-detail/product-deta
 import { LoadingComponent } from './components/loading/loading.component';
 import { LoadingService } from './services/loading.service';
 import { QuantityComponent } from './components/quantity/quantity.component';
+import { CartHomeComponent } from './components/cart-home/cart-home.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { QuantityComponent } from './components/quantity/quantity.component';
     ProductCardComponent,
     ProductDetailComponent,
     LoadingComponent,
-    QuantityComponent
+    QuantityComponent,
+    CartHomeComponent
   ],
   imports: [
     BrowserModule,

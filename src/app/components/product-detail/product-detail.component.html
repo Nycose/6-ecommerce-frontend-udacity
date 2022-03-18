@@ -14,9 +14,8 @@
                     {{ product.price }}
                 </p>
 
-                <app-quantity [product]="product" [quantity]="quantity$ | async"></app-quantity>
 
-                <button mat-raised-button color="primary">ADD TO CART</button>
+                <app-quantity [product]="product"></app-quantity>
             </div>
         </mat-grid-tile>
       </mat-grid-list>

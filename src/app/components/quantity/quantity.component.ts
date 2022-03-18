@@ -1,48 +1,49 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { map, Observable, tap } from 'rxjs';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
 import { IProduct } from 'src/app/models/product-model';
-import { CartService } from 'src/app/services/cart.service';
+import { QuantityService } from 'src/app/services/quantity.service';
 
 @Component({
   selector: 'app-quantity',
   templateUrl: './quantity.component.html',
-  styleUrls: ['./quantity.component.css']
+  styleUrls: ['./quantity.component.css'],
+  providers: [QuantityService]
 })
-export class QuantityComponent implements OnInit, OnDestroy, OnChanges {
+export class QuantityComponent implements OnInit {
 
   @Input()
   product: IProduct;
 
-  @Input()
-  quantity: number | null;
+  @Output()
+  quantityIncreased = new EventEmitter<true>();
 
-  control = new FormControl(1);
+  @Output()
+  removedFromCart = new EventEmitter<true>();
 
-  isInCart$: Observable<boolean>;
+  hidden$: Observable<boolean>;
+  quantity$: Observable<number>;
 
-  constructor(private cartService: CartService, private _snackBar: MatSnackBar) { }
+  constructor(private quantityService: QuantityService) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.control.setValue(this.quantity)
-  }
-  
   ngOnInit(): void {
-    this.isInCart$ = this.cartService.isInCart(this.product.id);
+    this.hidden$ = this.quantityService.isInCart(this.product.id);
+    this.quantity$ = this.quantityService.getQuantityById(this.product.id);
   }
 
-  ngOnDestroy(): void {
-    
+  addToCart(): void {
+    this.quantityService.addToCart(this.product, 1);
+    this.quantityIncreased.emit(true);
   }
 
-  addToCart() {
-    this._snackBar
-    .open(`${this.product.title} added to cart.`, 'DISMISS', { duration: 2500 });
+  increaseQuantity(quantity: string): void {
+    const quant = Number(quantity);
+    this.quantityService.addToCart(this.product, quant);
+    this.quantityIncreased.emit(true);
+  }
 
-    const quant = this.control.value;
-
-    this.cartService.addToCart(this.product, quant);
+  removeFromCart(): void {
+    this.quantityService.removeFromCart(this.product);
+    this.removedFromCart.emit(true);
   }
 
 }
