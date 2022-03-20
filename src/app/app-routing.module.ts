@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CartHomeComponent } from './components/cart-home/cart-home.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductsHomeComponent } from './components/products-home/products-home.component';
 
@@ -16,11 +17,15 @@ const routes: Routes = [
   {
     path: 'products/:productId',
     component: ProductDetailComponent
+  },
+  {
+    path: 'cart',
+    component: CartHomeComponent
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

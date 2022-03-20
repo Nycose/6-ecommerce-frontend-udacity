@@ -1,25 +1,28 @@
+<main>
 
+    <div class="container">
 
-<div class="container">
-
-    <mat-tab-group mat-align-tabs="center">
-
-        <mat-tab label="All">
-            <app-product-list [productList]="products$ | async"></app-product-list>
-        </mat-tab>
+        <mat-tab-group mat-align-tabs="center">
     
-        <mat-tab label="Salads">
-            <app-product-list [productList]="salads$ | async"></app-product-list>
-        </mat-tab>
-    
-        <mat-tab label="Main Dishes">
-            <app-product-list [productList]="mainDishes$ | async"></app-product-list>
-        </mat-tab>
-    
-        <mat-tab label="Desserts">
-            <app-product-list [productList]="desserts$ | async"></app-product-list>
-        </mat-tab>
+            <mat-tab label="All">
+                <app-product-list [productList]="products$ | async"></app-product-list>
+            </mat-tab>
         
-    </mat-tab-group>
+            <mat-tab label="Salads">
+                <app-product-list [productList]="salads$ | async"></app-product-list>
+            </mat-tab>
+        
+            <mat-tab label="Main Dishes">
+                <app-product-list [productList]="mainDishes$ | async"></app-product-list>
+            </mat-tab>
+        
+            <mat-tab label="Desserts">
+                <app-product-list [productList]="desserts$ | async"></app-product-list>
+            </mat-tab>
+            
+        </mat-tab-group>
+    
+    </div>
 
-</div>
+</main>
+

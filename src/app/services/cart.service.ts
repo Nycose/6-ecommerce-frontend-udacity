@@ -1,4 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
+import { MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { BehaviorSubject, filter, map, Observable, tap } from 'rxjs';
 import { IProduct } from '../models/product-model';
 
@@ -7,12 +9,12 @@ import { IProduct } from '../models/product-model';
 })
 export class CartService {
 
-  private cartItemsSubject = new BehaviorSubject<IProduct[]>(this.initCart());
-  cartItems$: Observable<IProduct[]> = this.cartItemsSubject.asObservable();
+  private _cartItemsSubject = new BehaviorSubject<IProduct[]>(this._initCart());
+  cartItems$: Observable<IProduct[]> = this._cartItemsSubject.asObservable();
 
-  constructor() {}
+  constructor(private _route: Router) {}
 
-  private initCart(): IProduct[] {
+  private _initCart(): IProduct[] {
     const cart = localStorage.getItem('CART');
     if(cart) {
       const localCart: IProduct[] = JSON.parse(cart);
@@ -22,53 +24,70 @@ export class CartService {
     }
   }
 
-  private saveToLocalStorage(cart: IProduct[]): void {
+  private _saveToLocalStorage(cart: IProduct[]): void {
     localStorage.setItem('CART', JSON.stringify(cart));
   }
 
-  private addExistingProduct(product: IProduct, cart: IProduct[]): void {
+  private _addExistingProduct(product: IProduct, cart: IProduct[]): void {
     const newCart = [...cart];
     const replace = cart.findIndex(p => p.id === product.id);
 
     newCart.splice(replace, 1, product)
 
-    this.cartItemsSubject.next(newCart);
-    this.saveToLocalStorage(newCart);
+    this._cartItemsSubject.next(newCart);
+    this._saveToLocalStorage(newCart);
   }
 
-  private addNewProduct(product: IProduct, cart: IProduct[]): void {
+  private _addNewProduct(product: IProduct, cart: IProduct[]): void {
     const newCart = [...cart, product];
 
-    this.cartItemsSubject.next(newCart);
-    this.saveToLocalStorage(newCart);
+    this._cartItemsSubject.next(newCart);
+    this._saveToLocalStorage(newCart);
   }
 
-  addToCart(product: IProduct, quantity: number): void {
+  addToCart(product: IProduct, quantity: number | string): void {
+
+    if(typeof quantity === 'string') {
+      quantity = Number(quantity);
+    }
 
     if (+quantity < 1) {
       return;
     }
 
-    const currCart = this.cartItemsSubject.value;
+    const currCart = this._cartItemsSubject.value;
     const productExists = currCart.find(p => p.id === product.id);
-    const productWithQuant = {...product, quantity}
+    const cartProduct = {...product, quantity, total: quantity * product.price}
 
     if (productExists) {
-      this.addExistingProduct(productWithQuant, currCart);
+      this._addExistingProduct(cartProduct, currCart);
     }
 
     if (!productExists) {
-      this.addNewProduct(productWithQuant, currCart);
+      this._addNewProduct(cartProduct, currCart);
     }
 
   }
 
   removeFromCart(product: IProduct): void {
-    const cart = this.cartItemsSubject.value;
+    const cart = this._cartItemsSubject.value;
     const index = cart.findIndex(p => p.id === product.id);
     cart.splice(index, 1);
-    this.cartItemsSubject.next(cart);
-    this.saveToLocalStorage(cart);
+    this._cartItemsSubject.next(cart);
+    this._saveToLocalStorage(cart);
+  }
+
+  watchForUndo(ref: MatSnackBarRef<TextOnlySnackBar>, product: IProduct): void {
+    ref.afterDismissed()
+      .pipe(
+        filter(action => action.dismissedByAction),
+        tap(() => {
+          this.addToCart(product, product.quantity)
+          this._route.navigateByUrl('/cart')
+        }
+        )
+      )
+      .subscribe()
   }
 
   getCartQuantity(): Observable<number> {
@@ -81,6 +100,12 @@ export class CartService {
     return this.cartItems$.pipe(
       map(cart => cart.find(product => product.id === productId)),
       map(product => product?.quantity ?? 0)
+    )
+  }
+
+  getCartTotalCost(): Observable<number> {
+    return this.cartItems$.pipe(
+      map(cart => cart.reduce((acc, curr) => acc += curr.total, 0))
     )
   }
 

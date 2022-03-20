@@ -16,6 +16,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatTableModule} from '@angular/material/table';
 
 import { AppComponent } from './app.component';
 import { ProductsHomeComponent } from './components/products-home/products-home.component';
@@ -26,6 +28,9 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { LoadingService } from './services/loading.service';
 import { QuantityComponent } from './components/quantity/quantity.component';
 import { CartHomeComponent } from './components/cart-home/cart-home.component';
+import { CartListComponent } from './components/cart-list/cart-list.component';
+import { LoginHomeComponent } from './components/login-home/login-home.component';
+import { RegisterHomeComponent } from './components/register-home/register-home.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +41,10 @@ import { CartHomeComponent } from './components/cart-home/cart-home.component';
     ProductDetailComponent,
     LoadingComponent,
     QuantityComponent,
-    CartHomeComponent
+    CartHomeComponent,
+    CartListComponent,
+    LoginHomeComponent,
+    RegisterHomeComponent  
   ],
   imports: [
     BrowserModule,
@@ -55,7 +63,9 @@ import { CartHomeComponent } from './components/cart-home/cart-home.component';
     MatInputModule,
     MatBadgeModule,
     MatSnackBarModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTooltipModule,
+    MatTableModule
   ],
   providers: [LoadingService],
   bootstrap: [AppComponent]

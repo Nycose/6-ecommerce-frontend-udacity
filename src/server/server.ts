@@ -3,7 +3,7 @@ import { PRODUCTS_DB } from './product';
 
 const app = express();
 const port = 3000;
-const delay = 3000;
+const delay = 200;
 
 app.get('/api/products', (req, res) => {
     setTimeout(() => { res.send(PRODUCTS_DB) }, delay);

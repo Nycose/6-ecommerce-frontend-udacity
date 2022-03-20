@@ -9,7 +9,7 @@
     <mat-card-actions>
       
       <app-quantity [product]="product" (quantityIncreased)="addedToCart()" (removedFromCart)="removedFromCart()">
-        <button mat-mini-fab color="basic" [routerLink]="['/products', product.id]">
+        <button matTooltip="View product details" matTooltipPosition="below" matTooltipShowDelay="100" mat-mini-fab color="basic" [routerLink]="['/products', product.id]">
           <mat-icon>visibility</mat-icon>
         </button>
       </app-quantity>

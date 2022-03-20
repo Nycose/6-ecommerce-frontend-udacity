@@ -3,13 +3,22 @@
 
     <mat-sidenav-content>
 
+        <p>
+            <mat-toolbar color="primary">
+             <button mat-icon-button aria-label="Navigation menu icon" (click)="sidenav.toggle()">
+              <mat-icon>menu</mat-icon>
+            </button>
+            <span>Meal Delivery Service</span>
+          </mat-toolbar>
+        </p>
+
         <app-loading></app-loading>
 
         <router-outlet></router-outlet>
 
     </mat-sidenav-content>
 
-    <mat-sidenav [opened]="true" [mode]="'side'">
+    <mat-sidenav [opened]="true" [mode]="'side'" #sidenav>
         <mat-nav-list>
 
             <a mat-list-item routerLink="/shop">

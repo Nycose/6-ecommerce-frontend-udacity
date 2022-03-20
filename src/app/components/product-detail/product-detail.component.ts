@@ -2,9 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { map, Observable, pipe, Subscriber, Subscription, tap } from 'rxjs';
 import { IProduct } from 'src/app/models/product-model';
-import { CartService } from 'src/app/services/cart.service';
 import { ProductStoreService } from 'src/app/services/product-store.service';
-import { QuantityService } from 'src/app/services/quantity.service';
 
 @Component({
   selector: 'app-product-detail',

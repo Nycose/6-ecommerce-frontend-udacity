@@ -1,13 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IProduct } from 'src/app/models/product-model';
-import { QuantityService } from 'src/app/services/quantity.service';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-quantity',
   templateUrl: './quantity.component.html',
-  styleUrls: ['./quantity.component.css'],
-  providers: [QuantityService]
+  styleUrls: ['./quantity.component.css']
 })
 export class QuantityComponent implements OnInit {
 
@@ -23,26 +22,26 @@ export class QuantityComponent implements OnInit {
   hidden$: Observable<boolean>;
   quantity$: Observable<number>;
 
-  constructor(private quantityService: QuantityService) { }
+  constructor(private cart: CartService) { }
 
   ngOnInit(): void {
-    this.hidden$ = this.quantityService.isInCart(this.product.id);
-    this.quantity$ = this.quantityService.getQuantityById(this.product.id);
+    this.hidden$ = this.cart.isInCart(this.product.id);
+    this.quantity$ = this.cart.getCartQuantityById(this.product.id);
   }
 
   addToCart(): void {
-    this.quantityService.addToCart(this.product, 1);
+    this.cart.addToCart(this.product, 1);
     this.quantityIncreased.emit(true);
   }
 
   increaseQuantity(quantity: string): void {
     const quant = Number(quantity);
-    this.quantityService.addToCart(this.product, quant);
+    this.cart.addToCart(this.product, quant);
     this.quantityIncreased.emit(true);
   }
 
   removeFromCart(): void {
-    this.quantityService.removeFromCart(this.product);
+    this.cart.removeFromCart(this.product);
     this.removedFromCart.emit(true);
   }
 

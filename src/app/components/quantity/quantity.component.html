@@ -6,11 +6,11 @@
 <div id="fab-buttons">
     <ng-content></ng-content>
 
-    <button mat-mini-fab color="primary" (click)="addToCart()" *ngIf="!(hidden$ | async)">
+    <button matTooltip="Add to cart" matTooltipPosition="below" matTooltipShowDelay="100" mat-mini-fab color="primary" (click)="addToCart()" *ngIf="!(hidden$ | async)">
       <mat-icon>add</mat-icon>
     </button>
 
-    <button mat-mini-fab color="warn" (click)="removeFromCart()" *ngIf="hidden$ | async">
+    <button matTooltip="Remove from cart" matTooltipPosition="below" matTooltipShowDelay="100" mat-mini-fab color="warn" (click)="removeFromCart()" *ngIf="(hidden$ | async)">
       <mat-icon>delete</mat-icon>
     </button>
 </div>

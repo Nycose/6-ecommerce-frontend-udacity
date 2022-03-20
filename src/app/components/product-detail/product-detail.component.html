@@ -1,23 +1,31 @@
-<ng-container *ngIf="(product$ | async) as product">
+<main>
 
-    <mat-grid-list cols="2" rowHeight="2:2">
-        <mat-grid-tile>
-            <img [src]="product.image" [alt]="product.title"> 
-        </mat-grid-tile>
+    <div class="container">
 
-        <mat-grid-tile>
-            <div>
+        <ng-container *ngIf="(product$ | async) as product">
 
-                <h1>{{ product.title }}</h1>
-                <p>
-    
-                    {{ product.price }}
-                </p>
+            <mat-grid-list cols="2" rowHeight="2:2">
+                <mat-grid-tile>
+                    <img [src]="product.image" [alt]="product.title"> 
+                </mat-grid-tile>
+        
+                <mat-grid-tile>
+                    <div>
+        
+                        <h1>{{ product.title }}</h1>
+                        <p>
+            
+                            {{ product.price }}
+                        </p>
+        
+        
+                        <app-quantity [product]="product"></app-quantity>
+                    </div>
+                </mat-grid-tile>
+              </mat-grid-list>
+            
+        </ng-container>
 
+    </div>
 
-                <app-quantity [product]="product"></app-quantity>
-            </div>
-        </mat-grid-tile>
-      </mat-grid-list>
-    
-</ng-container>
+</main>
