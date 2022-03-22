@@ -18,6 +18,14 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTableModule} from '@angular/material/table';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter, MomentDateModule } from '@angular/material-moment-adapter';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDividerModule} from '@angular/material/divider';
 
 import { AppComponent } from './app.component';
 import { ProductsHomeComponent } from './components/products-home/products-home.component';
@@ -31,6 +39,13 @@ import { CartHomeComponent } from './components/cart-home/cart-home.component';
 import { CartListComponent } from './components/cart-list/cart-list.component';
 import { LoginHomeComponent } from './components/login-home/login-home.component';
 import { RegisterHomeComponent } from './components/register-home/register-home.component';
+import { CheckoutHomeComponent } from './components/checkout-home/checkout-home.component';
+import { CheckoutAccountInfoComponent } from './components/checkout-home/checkout-account-info/checkout-account-info.component';
+import { CheckoutFinalStepComponent } from './components/checkout-home/checkout-final-step/checkout-final-step.component';
+import { CheckoutPaymentDetailsComponent } from './components/checkout-home/checkout-payment-details/checkout-payment-details.component';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { CUSTOM_DATE_FORMATS } from './components/checkout-home/checkout-payment-details/custom-dates';
+import { CardNumberPipe } from './pipes/card-number.pipe';
 
 @NgModule({
   declarations: [
@@ -44,7 +59,12 @@ import { RegisterHomeComponent } from './components/register-home/register-home.
     CartHomeComponent,
     CartListComponent,
     LoginHomeComponent,
-    RegisterHomeComponent  
+    RegisterHomeComponent,
+    CheckoutHomeComponent,
+    CheckoutAccountInfoComponent,
+    CheckoutFinalStepComponent,
+    CheckoutPaymentDetailsComponent,
+    CardNumberPipe  
   ],
   imports: [
     BrowserModule,
@@ -65,9 +85,25 @@ import { RegisterHomeComponent } from './components/register-home/register-home.
     MatSnackBarModule,
     MatGridListModule,
     MatTooltipModule,
-    MatTableModule
+    MatTableModule,
+    MatStepperModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MomentDateModule,
+    MatExpansionModule,
+    MatDividerModule
   ],
-  providers: [LoadingService],
+  providers: [
+    LoadingService,
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

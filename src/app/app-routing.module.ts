@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CartHomeComponent } from './components/cart-home/cart-home.component';
+import { CheckoutHomeComponent } from './components/checkout-home/checkout-home.component';
+import { LoginHomeComponent } from './components/login-home/login-home.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductsHomeComponent } from './components/products-home/products-home.component';
+import { RegisterHomeComponent } from './components/register-home/register-home.component';
 
 const routes: Routes = [
   {
@@ -21,6 +24,18 @@ const routes: Routes = [
   {
     path: 'cart',
     component: CartHomeComponent
+  },
+  {
+    path: 'login',
+    component: LoginHomeComponent
+  },
+  {
+    path: 'register',
+    component: RegisterHomeComponent
+  },
+  {
+    path: 'checkout',
+    component: CheckoutHomeComponent
   }
 ];
 

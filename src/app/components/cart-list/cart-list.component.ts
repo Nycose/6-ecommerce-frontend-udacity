@@ -17,8 +17,6 @@ export class CartListComponent implements OnInit {
   quantity$: Observable<number>;
   total$: Observable<number>;
 
-  private _lastDeleted: IProduct;
-
   constructor(private _cart: CartService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -33,10 +31,8 @@ export class CartListComponent implements OnInit {
   }
 
   removeFromCart(product: IProduct): void {
-    this._lastDeleted = product;
-
     const snackRef = this._snackBar.open(`${product.title} removed from cart.`, 'UNDO', {duration: 3000});
-    this._cart.watchForUndo(snackRef, this._lastDeleted);
+    this._cart.watchForUndo(snackRef);
       
     this._cart.removeFromCart(product);
   }

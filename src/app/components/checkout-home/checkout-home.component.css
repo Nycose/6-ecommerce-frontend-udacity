@@ -1,0 +1,7 @@
+.align-right {
+    text-align: right;
+}
+
+.align-right > button {
+    margin-left: 15px;
+}

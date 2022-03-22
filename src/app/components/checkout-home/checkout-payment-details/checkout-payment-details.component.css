@@ -1,0 +1,29 @@
+mat-form-field.mat-form-field {
+    cursor: text;
+    min-width: 30%;
+    margin-bottom: 1.3em;
+}
+
+mat-radio-button {
+  margin-right: 30px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.cvvMonthPicker .mat-calendar-period-button {
+  pointer-events: none;
+}
+
+.cvvMonthPicker .mat-calendar-arrow {
+  display: none;
+}

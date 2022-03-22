@@ -1,0 +1,38 @@
+<mat-accordion multi="true">
+
+    <mat-expansion-panel expanded="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Payment information
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p><strong>Total: </strong>{{ total | currency }}</p>
+      <p><strong>Card ending in: </strong>{{ cardNumber | cardNumber }}</p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel expanded="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Cart
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list>
+          <ng-container *ngFor="let product of cart; let i=index;">
+              <mat-list-item>
+                  <h3 matLine>{{ product.title }}</h3>
+                  <div matLine>
+                      <div class="info-container">
+                          <p>Quantity: {{ product.quantity }}</p>
+                          <p>Price: {{ product.price | currency }}</p>
+                          <p>Total: {{ product.total | currency }}</p>
+                      </div>
+                  </div>
+              </mat-list-item>
+              <mat-divider *ngIf="cart.length - 1 !== i"></mat-divider>
+          </ng-container>
+      </mat-list>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+
+  <br><br>

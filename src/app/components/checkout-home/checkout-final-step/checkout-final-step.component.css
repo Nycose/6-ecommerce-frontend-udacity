@@ -1,0 +1,10 @@
+.info-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.info-container > p {
+    margin-right: 15px;
+    color: rgba(0, 0, 0, .6);
+    margin-bottom: 0;
+}

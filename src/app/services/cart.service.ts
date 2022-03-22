@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -12,13 +13,14 @@ export class CartService {
   private _cartItemsSubject = new BehaviorSubject<IProduct[]>(this._initCart());
   cartItems$: Observable<IProduct[]> = this._cartItemsSubject.asObservable();
 
-  constructor(private _route: Router) {}
+  private _lastDeletedItem: IProduct;
+
+  constructor(private _route: Router, private http: HttpClient) {}
 
   private _initCart(): IProduct[] {
     const cart = localStorage.getItem('CART');
     if(cart) {
-      const localCart: IProduct[] = JSON.parse(cart);
-      return localCart;
+      return JSON.parse(cart);
     } else {
       return [];
     }
@@ -70,6 +72,7 @@ export class CartService {
   }
 
   removeFromCart(product: IProduct): void {
+    this._lastDeletedItem = product;
     const cart = this._cartItemsSubject.value;
     const index = cart.findIndex(p => p.id === product.id);
     cart.splice(index, 1);
@@ -77,12 +80,12 @@ export class CartService {
     this._saveToLocalStorage(cart);
   }
 
-  watchForUndo(ref: MatSnackBarRef<TextOnlySnackBar>, product: IProduct): void {
+  watchForUndo(ref: MatSnackBarRef<TextOnlySnackBar>): void {
     ref.afterDismissed()
       .pipe(
         filter(action => action.dismissedByAction),
         tap(() => {
-          this.addToCart(product, product.quantity)
+          this.addToCart(this._lastDeletedItem, this._lastDeletedItem.quantity)
           this._route.navigateByUrl('/cart')
         }
         )

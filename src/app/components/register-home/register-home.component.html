@@ -1,1 +1,56 @@
-<p>register-home works!</p>
+<main>
+
+    <div class="container">
+
+        <form [formGroup]="form">
+
+            <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput type="text" name="firstName" id="firstName" formControlName="firstName">
+            </mat-form-field>
+    
+            <br>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput type="text" name="lastName" id="lastName" formControlName="lastName">
+            </mat-form-field>
+    
+            <br>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" name="email" id="email" formControlName="email">
+
+                <mat-error *ngIf="email.errors?.['required'] && email.touched">
+                    This is a required field.
+                </mat-error>
+    
+                <mat-error *ngIf="email.errors?.['email'] && email.touched">
+                    Please enter a valid email address.
+                </mat-error>
+            </mat-form-field>
+    
+            <br>
+
+            
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" name="password" id="password" formControlName="password">
+
+                <mat-error *ngIf="password.errors?.['required'] && password.touched">
+                    This is a required field.
+                </mat-error>
+            </mat-form-field>
+    
+            <br>
+            
+            <button mat-raised-button color="primary" (click)="register()">CREATE ACCOUNT</button>
+
+        </form>
+
+
+
+    </div>
+
+</main>

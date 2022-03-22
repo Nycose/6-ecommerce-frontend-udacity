@@ -1,0 +1,9 @@
+mat-form-field.mat-form-field {
+    cursor: text;
+    min-width: 35%;
+    margin-bottom: 1.3em;
+}
+
+#validUsername {
+    color: #689F38;
+}

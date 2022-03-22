@@ -1,5 +1,6 @@
 import { AfterContentChecked, AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
+import { AuthService } from './services/auth.service';
 import { CartService } from './services/cart.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
   cartQuantity$: Observable<number>;
   badgeHidden$: Observable<boolean>;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, public auth: AuthService) {}
 
   ngOnInit(): void {
     this.cartQuantity$ = this.cartService.getCartQuantity();

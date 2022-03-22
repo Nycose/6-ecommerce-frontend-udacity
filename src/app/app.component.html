@@ -31,15 +31,21 @@
                 <span>Cart</span>
             </a>
 
-            <a mat-list-item routerLink="/login">
+            <a mat-list-item routerLink="/register" *ngIf="!(auth.user$ | async)">
+                <mat-icon matListIcon>person_add</mat-icon>
+                <span>Register</span>
+            </a>
+
+            <a mat-list-item routerLink="/login" *ngIf="!(auth.user$ | async)">
                 <mat-icon matListIcon>login</mat-icon>
                 <span>Login</span>
             </a>
 
-            <a mat-list-item>
+            <a mat-list-item *ngIf="(auth.user$ | async)" (click)="auth.logout()">
                 <mat-icon matListIcon>logout</mat-icon>
                 <span>Logout</span>
             </a>
+
 
         </mat-nav-list>
     </mat-sidenav>
