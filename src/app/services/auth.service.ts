@@ -1,65 +1,106 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, filter, Observable, tap, timer } from 'rxjs';
+import { BehaviorSubject, catchError, filter, map, Observable, tap, throwError, timer } from 'rxjs';
 import { IUser } from '../models/user-model';
 import { LoadingService } from './loading.service';
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private userSubject = new BehaviorSubject<IUser | null>(this._initUser());
-  user$: Observable<IUser | null> = this.userSubject.asObservable();
+  private _userSubject = new BehaviorSubject<IUser | null>(this._initUser());
+  user$: Observable<IUser | null> = this._userSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router, private loadingService: LoadingService) {}
+  constructor(private _http: HttpClient, private _router: Router, private _loadingService: LoadingService, private _messageService: MessageService) {}
 
   private _initUser(): IUser | null {
     const user = localStorage.getItem('AUTH');
+    return user ? JSON.parse(user) : null;
+  }
 
-    if (user) {
-      return JSON.parse(user);
-    } else {
-      return null;
-    }
+  private _saveUserToLocalStorage(user: IUser): void {
+    this._userSubject.next(user);
+    localStorage.setItem('AUTH', JSON.stringify(user));
   }
 
   fetchAllUsers(): Observable<IUser[]> {
-    return this.http.get<IUser[]>('/api/users');
+    return this._http.get<IUser[]>('/api/users')
+      .pipe(
+        catchError((err) => {
+          const message = err.error;
+          this._messageService.showErrors(err, message);
+          return throwError(() => new Error(err));
+        })
+      );
   }
 
-  register(user: IUser): void {
-    this.http.post<IUser>('/api/register', user)
+  register(user: IUser): Observable<IUser> {
+    const register$ = this._http.post<IUser>('/api/register', user)
       .pipe(
+        catchError((err) => {
+          const message = err.error;
+          this._messageService.showErrors(err, message);
+          return throwError(() => new Error(err));
+        }),
         filter(user => !!user.email),
-        tap(user => {
-          this.userSubject.next(user);
-          this.router.navigateByUrl('/shop');
-          localStorage.setItem('AUTH', JSON.stringify(user));
-        })
+        tap(user => this._saveUserToLocalStorage(user))
       )
-      .subscribe();
+
+    return this._loadingService.showLoadingUntilComplete(register$);
   }
 
-  login(email: string, password: string): void {
-    const login$ = this.http.post<IUser>('/api/login', {email, password})
+  login(email: string, password: string): Observable<IUser> {
+    const login$ = this._http.post<IUser>('/api/login', {email, password})
       .pipe(
+        catchError((err) => {
+          const message = err.error;
+          this._messageService.showErrors(err, message);
+          return throwError(() => new Error(err));
+        }),
         filter(user => !!user.email),
-        tap(user => {
-          this.userSubject.next(user);
-          this.router.navigateByUrl('/shop');
-          localStorage.setItem('AUTH', JSON.stringify(user));
-        })
+        tap(user => this._saveUserToLocalStorage(user))
       )
     
-      this.loadingService.showLoadingUntilComplete(login$).subscribe();
+    return this._loadingService.showLoadingUntilComplete(login$);
   }
 
   logout(): void {
-    this.router.navigateByUrl('/shop')
     localStorage.removeItem('AUTH');
-    this.userSubject.next(null);
+    this._userSubject.next(null);
+    this._router.navigateByUrl('/login');
+  }
+
+  isLoggedIn(): Observable<boolean> {
+    return this.user$
+      .pipe(
+        map(user => !!user),
+        tap()
+      );
+  }
+
+  redirectLoggedInUser() {
+    const isLoggedIn = this.loginStatus;
+    if (isLoggedIn) {
+      this._router.navigateByUrl('');
+    }
+  }
+
+  get userId(): number | null {
+    const user = this.currentUser;
+    return user?.userId || null;
+  }
+
+  get currentUser(): IUser | null {
+    const currentUser = this._userSubject.value;
+    return currentUser;
+  }
+
+  get loginStatus(): boolean {
+    const isLoggedIn = this._userSubject.value;
+    return !!isLoggedIn;
   }
 
 }

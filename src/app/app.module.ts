@@ -36,16 +36,17 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { LoadingService } from './services/loading.service';
 import { QuantityComponent } from './components/quantity/quantity.component';
 import { CartHomeComponent } from './components/cart-home/cart-home.component';
-import { CartListComponent } from './components/cart-list/cart-list.component';
 import { LoginHomeComponent } from './components/login-home/login-home.component';
 import { RegisterHomeComponent } from './components/register-home/register-home.component';
 import { CheckoutHomeComponent } from './components/checkout-home/checkout-home.component';
 import { CheckoutAccountInfoComponent } from './components/checkout-home/checkout-account-info/checkout-account-info.component';
-import { CheckoutFinalStepComponent } from './components/checkout-home/checkout-final-step/checkout-final-step.component';
 import { CheckoutPaymentDetailsComponent } from './components/checkout-home/checkout-payment-details/checkout-payment-details.component';
+import { CheckoutFinalStepComponent } from './components/checkout-home/checkout-final-step/checkout-final-step.component';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CUSTOM_DATE_FORMATS } from './components/checkout-home/checkout-payment-details/custom-dates';
 import { CardNumberPipe } from './pipes/card-number.pipe';
+import { ErrorComponent } from './components/error/error.component';
+import { MessageService } from './services/message.service';
 
 @NgModule({
   declarations: [
@@ -57,14 +58,14 @@ import { CardNumberPipe } from './pipes/card-number.pipe';
     LoadingComponent,
     QuantityComponent,
     CartHomeComponent,
-    CartListComponent,
     LoginHomeComponent,
     RegisterHomeComponent,
     CheckoutHomeComponent,
     CheckoutAccountInfoComponent,
-    CheckoutFinalStepComponent,
     CheckoutPaymentDetailsComponent,
-    CardNumberPipe  
+    CheckoutFinalStepComponent,
+    CardNumberPipe,
+    ErrorComponent  
   ],
   imports: [
     BrowserModule,
@@ -97,6 +98,7 @@ import { CardNumberPipe } from './pipes/card-number.pipe';
   ],
   providers: [
     LoadingService,
+    MessageService,
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,

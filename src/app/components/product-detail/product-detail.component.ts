@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { map, Observable, pipe, Subscriber, Subscription, tap } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { map, Observable, Subscription, tap } from 'rxjs';
 import { IProduct } from 'src/app/models/product-model';
 import { ProductStoreService } from 'src/app/services/product-store.service';
 
@@ -11,7 +11,7 @@ import { ProductStoreService } from 'src/app/services/product-store.service';
 })
 export class ProductDetailComponent implements OnInit, OnDestroy {
 
-  private productId$: Subscription;
+  private _productIdSubscription: Subscription;
 
   product$: Observable<IProduct>;
 
@@ -23,7 +23,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(): void {
-    this.productId$ = this.route.params.pipe(
+    this._productIdSubscription = this.route.params.pipe(
       map(params => params['productId']),
       tap(productId => {
         this.product$ = this.productStore.filterById(productId);
@@ -35,7 +35,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.productId$.unsubscribe();
+    this._productIdSubscription.unsubscribe();
   }
 
 }

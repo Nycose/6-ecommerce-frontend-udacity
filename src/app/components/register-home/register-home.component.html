@@ -45,7 +45,7 @@
     
             <br>
             
-            <button mat-raised-button color="primary" (click)="register()">CREATE ACCOUNT</button>
+            <button mat-raised-button color="primary" (click)="register()" [disabled]="form.invalid">CREATE ACCOUNT</button>
 
         </form>
 

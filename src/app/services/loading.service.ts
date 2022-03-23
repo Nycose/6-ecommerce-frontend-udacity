@@ -4,8 +4,8 @@ import { BehaviorSubject, concatMap, finalize, Observable, of, tap } from 'rxjs'
 @Injectable()
 export class LoadingService {
 
-  private subject = new BehaviorSubject<boolean>(false);
-  loading$: Observable<boolean> = this.subject.asObservable();
+  private _subject = new BehaviorSubject<boolean>(false);
+  loading$: Observable<boolean> = this._subject.asObservable();
 
   constructor() {  }
 
@@ -18,11 +18,11 @@ export class LoadingService {
   }
 
   loadingOn(): void {
-    this.subject.next(true);
+    this._subject.next(true);
   }
 
   loadingOff(): void {
-    this.subject.next(false);
+    this._subject.next(false);
   }
   
 }

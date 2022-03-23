@@ -1,11 +1,15 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser'
 import { PRODUCTS_DB } from './product';
-import {USER_DB } from './user';
+import {ORDER_DB, USER_DB } from './user';
 
 export const app = express();
 const port = 3000;
 export const delay = 500;
+
+let USER_ID = 1;
+let ORDER_ID = 1;
+
 
 app.use(bodyParser.json())
 
@@ -41,7 +45,7 @@ app.post('/api/products', (req, res) => {
 
 
 app.post('/api/register', (req, res) => {
-    const user = req.body;
+    const user = {id: ++USER_ID, ...req.body};
     const userInDb = USER_DB.find(u => u.email === user?.email);
 
     setTimeout(() => {
@@ -52,17 +56,21 @@ app.post('/api/register', (req, res) => {
 
         const newUser = {...user, isAdmin: false}
 
+        if(!user.username) {
+            newUser.username = user.email;
+        }
+
         USER_DB.push(newUser);
 
         const userProfile = {
-            userId: 1,
+            userId: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
             isAdmin: false
         };
 
-        console.log(USER_DB)
+        console.log('USERS: ', USER_DB)
 
         return res.send(userProfile)
 
@@ -81,6 +89,7 @@ app.post('/api/login', (req, res) => {
         }
 
         const userProfile = {
+            userId: userInDb.id,
             firstName: userInDb.firstName,
             lastName: userInDb.lastName,
             email: userInDb.email,
@@ -92,6 +101,19 @@ app.post('/api/login', (req, res) => {
     }, delay)
 
 
+})
+
+app.post('/api/checkout', (req, res) => {
+    setTimeout(() => {        
+        const cart = ORDER_DB;
+        const order = {orderId: ++ORDER_ID,...req.body};
+    
+        cart.push(order);
+
+        console.log('ORDERS: ', ORDER_DB);
+    
+        return res.send(order);
+    }, delay);
 })
 
 app.listen(port, () => {

@@ -1,5 +1,4 @@
 <main>
-
     <div class="container">
 
         <form [formGroup]="form">
@@ -30,12 +29,9 @@
     
             <br>
             
-            <button mat-raised-button color="primary" (click)="login()">LOGIN</button>
+            <button mat-raised-button color="primary" (click)="login()" [disabled]="form.invalid">LOGIN</button>
 
         </form>
 
-
-
     </div>
-
 </main>

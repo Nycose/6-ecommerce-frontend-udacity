@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { filter, Subscription, tap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { usernameValidator } from './usernameValidator';
 
@@ -8,7 +9,7 @@ import { usernameValidator } from './usernameValidator';
   templateUrl: './checkout-account-info.component.html',
   styleUrls: ['./checkout-account-info.component.css']
 })
-export class CheckoutAccountInfoComponent implements OnInit {
+export class CheckoutAccountInfoComponent implements OnInit, OnDestroy {
 
   form = this.fb.group({
     firstName: ['', [
@@ -26,14 +27,34 @@ export class CheckoutAccountInfoComponent implements OnInit {
       Validators.email
     ]],
     username: ['', {
-      asyncValidators: [usernameValidator(this.auth)]
-    }]
+      validators: Validators.required,
+      asyncValidators: usernameValidator(this.auth),
+      updateOn: 'blur'
+    }],
+    password: ['', Validators.required]
   });
+
+  private _isLoggedIn: Subscription;
+
+  @Output('userFormDisabled')
+  private _userFormDisabled = new EventEmitter<boolean>();
 
   constructor(private fb: FormBuilder, private auth: AuthService) { }
 
   ngOnInit(): void {
-    
+    this._isLoggedIn = this.auth.isLoggedIn()
+      .pipe(
+        filter(status => status),
+        tap((status) => {
+          this.form.disable();
+          this._userFormDisabled.emit(true);
+        })
+      )
+      .subscribe()
+  }
+
+  ngOnDestroy(): void {
+    this._isLoggedIn.unsubscribe();
   }
 
   get firstName() {
@@ -50,6 +71,10 @@ export class CheckoutAccountInfoComponent implements OnInit {
 
   get username() {
     return this.form.controls['username'];
+  }
+
+  get password() {
+    return this.form.controls['password'];
   }
 
 }

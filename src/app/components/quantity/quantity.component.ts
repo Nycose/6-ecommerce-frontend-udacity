@@ -22,26 +22,26 @@ export class QuantityComponent implements OnInit {
   hidden$: Observable<boolean>;
   quantity$: Observable<number>;
 
-  constructor(private cart: CartService) { }
+  constructor(private _cart: CartService) { }
 
   ngOnInit(): void {
-    this.hidden$ = this.cart.isInCart(this.product.id);
-    this.quantity$ = this.cart.getCartQuantityById(this.product.id);
+    this.hidden$ = this._cart.isInCart(this.product.id);
+    this.quantity$ = this._cart.getCartQuantityById(this.product.id);
   }
 
   addToCart(): void {
-    this.cart.addToCart(this.product, 1);
+    this._cart.addToCart(this.product, 1);
     this.quantityIncreased.emit(true);
   }
 
   increaseQuantity(quantity: string): void {
     const quant = Number(quantity);
-    this.cart.addToCart(this.product, quant);
+    this._cart.addToCart(this.product, quant);
     this.quantityIncreased.emit(true);
   }
 
   removeFromCart(): void {
-    this.cart.removeFromCart(this.product);
+    this._cart.removeFromCart(this.product);
     this.removedFromCart.emit(true);
   }
 

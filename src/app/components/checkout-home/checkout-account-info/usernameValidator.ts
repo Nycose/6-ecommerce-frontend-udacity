@@ -8,10 +8,15 @@ export function usernameValidator(auth: AuthService): AsyncValidatorFn {
     return (control: AbstractControl) => {
         return auth.fetchAllUsers().pipe(
             map((users) => {
-                const user = users.find(u => u.username.toLowerCase() === control.value.toLowerCase());
-                return user ? {usernameExists: true} : null;
+                const controlValue = control.value;
+                if (controlValue) {
+                    const user = users.find(u => u.username.toLowerCase() === controlValue.toLowerCase());
+                    return user ? {usernameExists: true} : null;
+                } else {
+                    return null;
+                }
             })
         )
     }
-    
+
 }

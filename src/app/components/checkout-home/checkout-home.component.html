@@ -1,16 +1,16 @@
 <main>
     <div class="container">
 
-        <mat-stepper>
+        <mat-stepper linear #stepper>
 
-            <mat-step label="Account information" [stepControl]="step1.form">
-                <app-checkout-account-info #step1></app-checkout-account-info>
+            <mat-step label="Account information" [stepControl]="step1.form" [editable]="userFormEditable" [hasError]="step1.form.invalid && step1.form.touched" errorMessage="Please review the highlighted fields.">
+                <app-checkout-account-info #step1 (userFormDisabled)="onUserFormDisabled()"></app-checkout-account-info>
                 <div class="align-right">
                     <button mat-stroked-button matStepperNext>Next</button>
                 </div>
             </mat-step>
 
-            <mat-step label="Payment details" [stepControl]="step2.form">
+            <mat-step label="Payment details" [stepControl]="step2.form" [hasError]="step2.form.invalid && step2.form.touched" errorMessage="Please review the highlighted fields.">
                 <app-checkout-payment-details #step2></app-checkout-payment-details>
                 <div class="align-right">
                     <button mat-stroked-button matStepperPrevious>Back</button>
@@ -25,7 +25,8 @@
                     <app-checkout-final-step [cardNumber]="step2.cardNumber.value" [cart]="cart" [total]="(total$ | async) || 0"></app-checkout-final-step>
 
                     <div class="align-right">
-                        <button mat-stroked-button matStepperPrevious>Back</button>
+                        <button mat-stroked-button matStepperPrevious>BACK</button>
+                        <button mat-raised-button color="primary" [disabled]="step1.form.invalid || step2.form.invalid" (click)="onSubmit()">PLACE ORDER</button>
                     </div>
 
                 </ng-container>

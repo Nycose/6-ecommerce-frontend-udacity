@@ -26,7 +26,7 @@ export class CheckoutPaymentDetailsComponent implements OnInit, OnDestroy {
     billingZip: [{value: null, disabled: true}, [Validators.required, Validators.min(10000), Validators.max(99999)]],
     cardType: ['credit', Validators.required],
     nameOnCard: [null, Validators.required],
-    cardNumber: [null, [Validators.required, Validators.pattern('[0-9]*')]],
+    cardNumber: [null, [Validators.required, Validators.pattern('[0-9]*'), Validators.minLength(5)]],
     expiration: [this.date, Validators.required],
     cvv: [null, [Validators.required, Validators.pattern('[0-9]*'), Validators.minLength(3), Validators.maxLength(3)]]
   });

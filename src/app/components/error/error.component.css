@@ -1,0 +1,14 @@
+.messages-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: #a94442;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    padding: 10px 15px;
+    font-family: Roboto;
+    position: relative;
+    max-width: 500px;
+    margin: 30px auto;
+}

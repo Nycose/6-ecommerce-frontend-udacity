@@ -1,31 +1,30 @@
 <main>
-
     <div class="container">
-
         <ng-container *ngIf="(product$ | async) as product">
-
             <mat-grid-list cols="2" rowHeight="2:2">
+
                 <mat-grid-tile>
                     <img [src]="product.image" [alt]="product.title"> 
                 </mat-grid-tile>
         
                 <mat-grid-tile>
                     <div>
-        
                         <h1>{{ product.title }}</h1>
-                        <p>
-            
-                            {{ product.price | currency }}
-                        </p>
-        
-        
-                        <app-quantity [product]="product"></app-quantity>
+                        <p>{{ product.price | currency }}</p>
+                        <app-quantity [product]="product">
+                            <button 
+                            mat-mini-fab 
+                            matTooltip="Back to products" 
+                            aria-label="Back to products" 
+                            routerLink="/shop"
+                            style="margin-right: 10px;">
+                                <mat-icon>arrow_back</mat-icon>
+                            </button>
+                        </app-quantity>
                     </div>
                 </mat-grid-tile>
+
               </mat-grid-list>
-            
         </ng-container>
-
     </div>
-
 </main>

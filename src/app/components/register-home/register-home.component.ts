@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -9,20 +10,24 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterHomeComponent implements OnInit {
 
-  form = this.fb.group({
+  form = this._fb.group({
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   })
 
-  constructor(private auth: AuthService, private fb: FormBuilder) { }
+  constructor(private _auth: AuthService, private _fb: FormBuilder, private _router: Router) { }
 
   ngOnInit(): void {
+    this._auth.redirectLoggedInUser();
   }
 
   register() {
-    this.auth.register(this.form.value);
+    this._auth.register(this.form.value)
+      .subscribe(() => {
+        this._router.navigateByUrl('/shop');
+      });
   }
 
   get email() {

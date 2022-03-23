@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IProduct } from '../models/product-model';
 import { LoadingService } from './loading.service';
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +13,21 @@ export class ProductStoreService {
   private subject = new BehaviorSubject<IProduct[]>([]);
   products$: Observable<IProduct[]> = this.subject.asObservable();
 
-  constructor(private http: HttpClient, private loadingService: LoadingService) { 
+  constructor(private _http: HttpClient, private _loadingService: LoadingService, private _messagesService: MessageService) { 
     this.loadAllProducts().subscribe();
   }
 
   private loadAllProducts(): Observable<IProduct[]> {
-    const products$ = this.http.get<IProduct[]>('/api/products')
+    const products$ = this._http.get<IProduct[]>('/api/products')
       .pipe(
+        catchError(err => {
+          const message = 'Could not load products.';
+          this._messagesService.showErrors(err, message);
+          return throwError(() => new Error(err));
+        }),
         tap(products => this.subject.next(products))
       );
-    return this.loadingService.showLoadingUntilComplete(products$)
+    return this._loadingService.showLoadingUntilComplete(products$)
   }
 
   filterByCategory(category: string): Observable<IProduct[]> {
