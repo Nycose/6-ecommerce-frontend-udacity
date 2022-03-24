@@ -1,0 +1,30 @@
+<main>
+    <div class="container">
+
+        <h1><strong>Order History</strong></h1>
+
+        <br><br>
+
+        <ng-container *ngFor="let order of (orders$ | async) as orders; let orderId=index;">        
+        
+                <h3>Order id: {{ orderId + 1 }}</h3>
+                <mat-list>
+                    <mat-list-item *ngFor="let product of order; let i=index;">
+                        <h4 matLine>{{ product.title }}</h4>
+                        <div matLine>
+                            <div class="info-container">
+                                <p>Quantity: {{ product.quantity }}</p>
+                                <p>Price: {{ product.price | currency }}</p>
+                                <p>Total: {{ product.total | currency }}</p>
+                            </div>
+                        </div>
+                    </mat-list-item>
+                </mat-list> 
+                
+                <br><br><br>
+        
+        </ng-container>
+        
+
+    </div>
+</main>

@@ -47,6 +47,8 @@ import { CUSTOM_DATE_FORMATS } from './components/checkout-home/checkout-payment
 import { CardNumberPipe } from './pipes/card-number.pipe';
 import { ErrorComponent } from './components/error/error.component';
 import { MessageService } from './services/message.service';
+import { OrdersComponent } from './components/orders/orders.component';
+import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import { MessageService } from './services/message.service';
     CheckoutPaymentDetailsComponent,
     CheckoutFinalStepComponent,
     CardNumberPipe,
-    ErrorComponent  
+    ErrorComponent,
+    OrdersComponent,
+    ConfirmationComponent  
   ],
   imports: [
     BrowserModule,

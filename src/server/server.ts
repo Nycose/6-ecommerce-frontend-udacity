@@ -5,7 +5,7 @@ import {ORDER_DB, USER_DB } from './user';
 
 export const app = express();
 const port = 3000;
-export const delay = 500;
+export const delay = 700;
 
 let USER_ID = 1;
 let ORDER_ID = 1;
@@ -45,10 +45,9 @@ app.post('/api/products', (req, res) => {
 
 
 app.post('/api/register', (req, res) => {
-    const user = {id: ++USER_ID, ...req.body};
-    const userInDb = USER_DB.find(u => u.email === user?.email);
-
     setTimeout(() => {
+        const user = {id: ++USER_ID, ...req.body};
+        const userInDb = USER_DB.find(u => u.email === user?.email);
 
         if (userInDb) {
             return res.status(401).send('The email you have entered already exists.');
@@ -70,19 +69,14 @@ app.post('/api/register', (req, res) => {
             isAdmin: false
         };
 
-        console.log('USERS: ', USER_DB)
-
         return res.send(userProfile)
-
-
     }, delay)
 });
 
 app.post('/api/login', (req, res) => {
-    const user = req.body;
-    const userInDb = USER_DB.find(u => u.email === user?.email);
-
     setTimeout(() => {
+        const user = req.body;
+        const userInDb = USER_DB.find(u => u.email === user?.email);
 
         if (!userInDb || userInDb.password !== user.password) { 
             return res.status(401).send('The email or password you have entered is incorrect.');
@@ -97,10 +91,7 @@ app.post('/api/login', (req, res) => {
         };
     
         return res.send(userProfile);
-
     }, delay)
-
-
 })
 
 app.post('/api/checkout', (req, res) => {
@@ -109,10 +100,19 @@ app.post('/api/checkout', (req, res) => {
         const order = {orderId: ++ORDER_ID,...req.body};
     
         cart.push(order);
-
-        console.log('ORDERS: ', ORDER_DB);
     
         return res.send(order);
+    }, delay);
+})
+
+app.get('/api/:userId/orders', (req, res) => {
+    setTimeout(() => {
+        const userId = Number(req.params.userId);
+        const orders = ORDER_DB
+            .filter(order => order.userId === userId)
+            .map(order => order.cart);
+    
+        res.send(orders);
     }, delay);
 })
 

@@ -10,14 +10,14 @@ import { MessageService } from './message.service';
 })
 export class ProductStoreService {
 
-  private subject = new BehaviorSubject<IProduct[]>([]);
-  products$: Observable<IProduct[]> = this.subject.asObservable();
+  private _subject = new BehaviorSubject<IProduct[]>([]);
+  products$: Observable<IProduct[]> = this._subject.asObservable();
 
   constructor(private _http: HttpClient, private _loadingService: LoadingService, private _messagesService: MessageService) { 
-    this.loadAllProducts().subscribe();
+    this._loadAllProducts().subscribe();
   }
 
-  private loadAllProducts(): Observable<IProduct[]> {
+  private _loadAllProducts(): Observable<IProduct[]> {
     const products$ = this._http.get<IProduct[]>('/api/products')
       .pipe(
         catchError(err => {
@@ -25,7 +25,7 @@ export class ProductStoreService {
           this._messagesService.showErrors(err, message);
           return throwError(() => new Error(err));
         }),
-        tap(products => this.subject.next(products))
+        tap(products => this._subject.next(products))
       );
     return this._loadingService.showLoadingUntilComplete(products$)
   }

@@ -43,6 +43,11 @@
                 <span>Login</span>
             </a>
 
+            <a mat-list-item routerLink="/orders" *ngIf="(auth.user$ | async)">
+                <mat-icon matListIcon>list_alt</mat-icon>
+                <span>Order History</span>
+            </a>
+
             <a mat-list-item *ngIf="(auth.user$ | async)" (click)="auth.logout()">
                 <mat-icon matListIcon>logout</mat-icon>
                 <span>Logout</span>

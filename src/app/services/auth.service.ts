@@ -88,6 +88,13 @@ export class AuthService {
     }
   }
 
+  redirectLoggedOutUser() {
+    const isLoggedOut = !this.loginStatus;
+    if (isLoggedOut) {
+      this._router.navigateByUrl('');
+    }
+  }
+
   get userId(): number | null {
     const user = this.currentUser;
     return user?.userId || null;

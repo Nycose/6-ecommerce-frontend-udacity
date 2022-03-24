@@ -21,15 +21,11 @@ export class CartService {
   cartItems$: Observable<IProduct[]> = this._cartItemsSubject.asObservable();
 
 
-  constructor(private _route: Router, private http: HttpClient, private _auth: AuthService, private _loading: LoadingService, private _messageService: MessageService) {}
+  constructor(private _route: Router, private _http: HttpClient, private _auth: AuthService, private _loading: LoadingService, private _messageService: MessageService) {}
 
   private _initCart(): IProduct[] {
     const cart = localStorage.getItem('CART');
-    if(cart) {
-      return JSON.parse(cart);
-    } else {
-      return [];
-    }
+    return cart ? JSON.parse(cart) : [];
   }
 
   private _saveToLocalStorage(cart: IProduct[]): void {
@@ -55,7 +51,7 @@ export class CartService {
   }
 
   private _placeOrder(order: IOrder): Observable<IOrder> {
-    const checkout = this.http.post<IOrder>('/api/checkout', order).pipe(
+    const checkout = this._http.post<IOrder>('/api/checkout', order).pipe(
         catchError((err) => {
           const message = err.error;
           this._messageService.showErrors(err, message);
@@ -144,7 +140,7 @@ export class CartService {
     )
   }
 
-  checkout(user: IUser) {
+  checkout(user: IUser): void {
 
     const isLoggedIn = this._auth.loginStatus;
     const cart = this.cartItems;
@@ -155,7 +151,7 @@ export class CartService {
       const order = { userId, cart: [...cart] }
       this._placeOrder(order)
         .pipe(
-          tap(() => this._route.navigateByUrl(''))
+          tap(() => this._route.navigateByUrl('/confirmation'))
         )
         .subscribe();
 
@@ -168,7 +164,7 @@ export class CartService {
         const order = { userId: user.userId, cart: [...cart] };
         this._placeOrder(order)
           .pipe(
-            tap(() => this._route.navigateByUrl(''))
+            tap(() => this._route.navigateByUrl('/confirmation'))
           )
           .subscribe();
 
@@ -178,5 +174,17 @@ export class CartService {
     
   }
 
+  getOrders(): Observable<IProduct[][]> {
+    const userId = this._auth.userId;
+    const orders$ = this._http.get<IProduct[][]>(`/api/${userId}/orders`)
+      .pipe(
+        catchError((err) => {
+          const message = err.error;
+          this._messageService.showErrors(err, message);
+          return throwError(() => new Error(err));
+        })
+      );
+    return this._loading.showLoadingUntilComplete(orders$);
+  }
 
 }

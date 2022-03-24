@@ -13,7 +13,7 @@ export class MessageService {
   constructor() { }
 
   showErrors(error: any, ...message: string[]) {
-    console.log(error);
+    console.log(error, message);
     this._subject.next(message);
   }
 }
