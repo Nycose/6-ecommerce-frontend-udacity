@@ -34,7 +34,7 @@ export class CheckoutPaymentDetailsComponent implements OnInit, OnDestroy {
   states = states;
   showBilling: boolean;
 
-  private valueChangesSubscription: Subscription;
+  private _valueChangesSubscription: Subscription;
 
   constructor(private fb: FormBuilder) { }
 
@@ -43,13 +43,13 @@ export class CheckoutPaymentDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.valueChangesSubscription.unsubscribe();
+    this._valueChangesSubscription.unsubscribe();
   }
 
   private _initBillingControls() {
     const billingFields = [this.billingAddress, this.billingCity, this.billingState, this.billingZip];
 
-    this.valueChangesSubscription = this.billingSameAsShipping.valueChanges.subscribe(val => {
+    this._valueChangesSubscription = this.billingSameAsShipping.valueChanges.subscribe(val => {
 
       if (val && this.billingAddress.enabled) {
         this.showBilling = false;

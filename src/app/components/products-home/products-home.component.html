@@ -2,22 +2,22 @@
 
     <div class="container">
 
-        <mat-tab-group mat-align-tabs="center">
+        <mat-tab-group mat-align-tabs="center" class="tab-group">
     
             <mat-tab label="All">
                 <app-product-list [productList]="products$ | async"></app-product-list>
             </mat-tab>
         
-            <mat-tab label="Salads">
-                <app-product-list [productList]="salads$ | async"></app-product-list>
+            <mat-tab label="Salads" *ngIf="(salads$ | async) as salads">
+                <app-product-list [productList]="salads"></app-product-list>
             </mat-tab>
         
-            <mat-tab label="Main Dishes">
-                <app-product-list [productList]="mainDishes$ | async"></app-product-list>
+            <mat-tab label="Main Dishes" *ngIf="(mainDishes$ | async) as mainDishes">
+                <app-product-list [productList]="mainDishes"></app-product-list>
             </mat-tab>
         
-            <mat-tab label="Desserts">
-                <app-product-list [productList]="desserts$ | async"></app-product-list>
+            <mat-tab label="Desserts" *ngIf="(desserts$ | async) as desserts">
+                <app-product-list [productList]="desserts"></app-product-list>
             </mat-tab>
             
         </mat-tab-group>

@@ -7,7 +7,7 @@ export class LoadingService {
   private _subject = new BehaviorSubject<boolean>(false);
   loading$: Observable<boolean> = this._subject.asObservable();
 
-  constructor() {  }
+  constructor() { }
 
   showLoadingUntilComplete<T>(obs$: Observable<T>): Observable<T> {
     return of(null).pipe(

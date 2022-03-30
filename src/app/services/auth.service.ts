@@ -38,18 +38,15 @@ export class AuthService {
   }
 
   register(user: IUser): Observable<IUser> {
-    const register$ = this._http.post<IUser>('/api/register', user)
+    return this._http.post<IUser>('/api/register', user)
       .pipe(
         catchError((err) => {
           const message = err.error;
           this._messageService.showErrors(err, message);
           return throwError(() => new Error(err));
         }),
-        filter(user => !!user.email),
         tap(user => this._saveUserToLocalStorage(user))
       )
-
-    return this._loadingService.showLoadingUntilComplete(register$);
   }
 
   login(email: string, password: string): Observable<IUser> {
@@ -60,7 +57,6 @@ export class AuthService {
           this._messageService.showErrors(err, message);
           return throwError(() => new Error(err));
         }),
-        filter(user => !!user.email),
         tap(user => this._saveUserToLocalStorage(user))
       )
     
@@ -76,8 +72,7 @@ export class AuthService {
   isLoggedIn(): Observable<boolean> {
     return this.user$
       .pipe(
-        map(user => !!user),
-        tap()
+        map(user => !!user)
       );
   }
 
@@ -95,11 +90,6 @@ export class AuthService {
     }
   }
 
-  get userId(): number | null {
-    const user = this.currentUser;
-    return user?.userId || null;
-  }
-
   get currentUser(): IUser | null {
     const currentUser = this._userSubject.value;
     return currentUser;
@@ -108,6 +98,11 @@ export class AuthService {
   get loginStatus(): boolean {
     const isLoggedIn = this._userSubject.value;
     return !!isLoggedIn;
+  }
+  
+  get userId(): number | null {
+    const user = this._userSubject.value;
+    return user?.userId || null;
   }
 
 }

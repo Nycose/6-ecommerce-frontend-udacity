@@ -95,7 +95,7 @@
         <mat-label>Card number</mat-label>
         <input matInput type="text" name="cardNumber" id="cardNumber" formControlName="cardNumber">
         <mat-error *ngIf="cardNumber.errors?.['required']">This is a required field.</mat-error>
-        <mat-error *ngIf="cardNumber.errors?.['pattern']">Please enter a valid card number.</mat-error>
+        <mat-error *ngIf="cardNumber.errors?.['pattern'] && !cardNumber.errors?.['minlength']">Please enter a valid card number.</mat-error>
         <mat-error *ngIf="cardNumber.errors?.['minlength']">Please enter a minimum of 5 characters.</mat-error>
     </mat-form-field>
 

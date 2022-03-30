@@ -13,12 +13,17 @@ export class ProductStoreService {
   private _subject = new BehaviorSubject<IProduct[]>([]);
   products$: Observable<IProduct[]> = this._subject.asObservable();
 
-  constructor(private _http: HttpClient, private _loadingService: LoadingService, private _messagesService: MessageService) { 
-    this._loadAllProducts().subscribe();
+  constructor(
+    private _http: HttpClient, 
+    private _loadingService: LoadingService, 
+    private _messagesService: MessageService
+    ) { 
+    this._loadingService.showLoadingUntilComplete(this._loadAllProducts())
+      .subscribe();
   }
 
   private _loadAllProducts(): Observable<IProduct[]> {
-    const products$ = this._http.get<IProduct[]>('/api/products')
+    return this._http.get<IProduct[]>('/api/products')
       .pipe(
         catchError(err => {
           const message = 'Could not load products.';
@@ -27,7 +32,6 @@ export class ProductStoreService {
         }),
         tap(products => this._subject.next(products))
       );
-    return this._loadingService.showLoadingUntilComplete(products$)
   }
 
   filterByCategory(category: string): Observable<IProduct[]> {

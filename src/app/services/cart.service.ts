@@ -20,7 +20,6 @@ export class CartService {
 
   cartItems$: Observable<IProduct[]> = this._cartItemsSubject.asObservable();
 
-
   constructor(private _route: Router, private _http: HttpClient, private _auth: AuthService, private _loading: LoadingService, private _messageService: MessageService) {}
 
   private _initCart(): IProduct[] {

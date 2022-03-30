@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IProduct } from 'src/app/models/product-model';
-import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-product-card',
@@ -13,7 +12,7 @@ export class ProductCardComponent implements OnInit {
   @Input()
   product: IProduct;
 
-  constructor(public cartService: CartService, private _snackBar: MatSnackBar) { }
+  constructor(private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
