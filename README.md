@@ -34,7 +34,7 @@ npm run test
 ```
 
 
-## Feature highlights
+## Technical highlights
 
 ### Architectural notes
 
