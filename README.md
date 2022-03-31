@@ -23,7 +23,9 @@ The server runs on localhost:3000
 npm run server
 ```
 
-### Serving the application (run this in a new terminal window)
+### Serving the application
+
+Run this in a new terminal window, separate from the server.
 
 ```
 npm run start
