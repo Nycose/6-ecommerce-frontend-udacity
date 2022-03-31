@@ -17,11 +17,13 @@ Because data is not persisted, but rather an object in memory on the server, res
 
 To simulate latency between requests, setTimeout() is used with a 'delay' constant that can be configured in the server.ts file.
 
+The server runs on localhost:3000
+
 ```
 npm run server
 ```
 
-### Serving the application
+### Serving the application (run this in a new terminal window)
 
 ```
 npm run start
