@@ -11,7 +11,7 @@
                     <div>
                         <h1>{{ product.title }}</h1>
                         <p>{{ product.price | currency }}</p>
-                        <p>{{ product.description | currency }}</p>
+                        <p>{{ product.description }}</p>
                         <app-quantity [product]="product">
                             <button 
                             mat-mini-fab 
