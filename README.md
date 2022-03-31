@@ -9,7 +9,7 @@ This project is for the [Udacity Full Stack JavaScript Developer Nanodegree](htt
 npm install
 ```
 
-### Server Information
+### Starting the server
 
 The server is built as a Node.js application with Express. Instead of persisting data to the Postgres database that was setup during the last project, data is retrevied and modified using plain JavaScript obect literals that simulate a database. This decision was made to keep the code review focused on the project, an Angular app, and not on dealing with additional dependencies and configuring a local database.
 
@@ -21,13 +21,13 @@ To simulate latency between requests, setTimeout() is used with a 'delay' consta
 npm run server
 ```
 
-### Serve the application
+### Serving the application
 
 ```
 npm run start
 ```
 
-### Testing
+### Running tests
 
 ```
 npm run test
